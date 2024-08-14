@@ -3,6 +3,7 @@ package repository
 import (
 	"ccg/models"
 	"ccg/storage"
+	"ccg/usecases"
 	"context"
 
 	"github.com/labstack/echo/v4"
@@ -18,12 +19,23 @@ func CreateCCG(ccg models.CCG) error {
 	docId := ccg.FirstName + "_" + ccg.LastName
 
 	ref := storage.DB.Collection("ccgs").Doc(docId)
-	data := map[string]interface{}{
-		"FirstName": ccg.FirstName,
-		"LastName":  ccg.LastName,
-		"Rank":      ccg.Rank,
-	}
+
+	data := usecases.StructToInterface(ccg)
+
 	ref.Create(context.Background(), data)
+
+	return nil
+}
+
+func EditCCG(ccg models.CCG) error {
+	docId := ccg.FirstName + "_" + ccg.LastName
+
+	ref := storage.DB.Collection("ccgs").Doc(docId)
+
+	data := usecases.StructToInterface(ccg)
+
+	ref.Set(context.Background(), data)
+
 	return nil
 }
 
