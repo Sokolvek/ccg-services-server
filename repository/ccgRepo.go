@@ -3,10 +3,11 @@ package repository
 import (
 	"ccg/models"
 	"ccg/storage"
-	"ccg/usecases"
 	"context"
+	"fmt"
 
 	"github.com/labstack/echo/v4"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 type CCGRepository interface {
@@ -15,43 +16,46 @@ type CCGRepository interface {
 	GetAllCCG(ctx echo.Context)
 }
 
-func CreateCCG(ccg models.CCG) error {
-	docId := ccg.FirstName + "_" + ccg.LastName
+func InitRepo() {
+	db = storage.MongoClient.Database("ccg-server")
+}
 
-	ref := storage.DB.Collection("ccgs").Doc(docId)
+func CreateCCG(ccg models.CCG) (models.CCG, error) {
 
-	data := usecases.StructToInterface(ccg)
-
-	ref.Create(context.Background(), data)
-
-	return nil
+	_, err := db.Collection("ccg").InsertOne(context.TODO(), ccg)
+	if err != nil {
+		fmt.Errorf("sukaaa", err)
+		return models.CCG{}, err
+	}
+	return ccg, nil
 }
 
 func EditCCG(ccg models.CCG) error {
-	docId := ccg.FirstName + "_" + ccg.LastName
-
-	ref := storage.DB.Collection("ccgs").Doc(docId)
-
-	data := usecases.StructToInterface(ccg)
-
-	ref.Set(context.Background(), data)
-
 	return nil
 }
 
 func GetCCG() ([]models.CCG, error) {
 	var ccgs []models.CCG
 
-	docs, err := storage.DB.Collection("ccgs").Documents(context.Background()).GetAll()
+	collection := db.Collection("ccg")
+
+	cursor, err := collection.Find(context.TODO(), bson.M{})
 	if err != nil {
 		return nil, err
 	}
-	for _, doc := range docs {
+	defer cursor.Close(context.TODO())
+
+	for cursor.Next(context.TODO()) {
 		var ccg models.CCG
-		if err := doc.DataTo(&ccg); err != nil {
+		if err := cursor.Decode(&ccg); err != nil {
 			return nil, err
 		}
 		ccgs = append(ccgs, ccg)
 	}
+
+	if err := cursor.Err(); err != nil {
+		return nil, err
+	}
+
 	return ccgs, nil
 }

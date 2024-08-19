@@ -1,7 +1,7 @@
 package models
 
 type CCG struct {
-	FirstName string
-	LastName  string
-	Rank      string
+	FirstName string `firestore:"FirstName"`
+	LastName  string `firestore:"LastName"`
+	Rank      string `firestore:"Rank"`
 }

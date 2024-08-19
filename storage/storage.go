@@ -4,27 +4,29 @@ import (
 	"context"
 	"log"
 
-	"cloud.google.com/go/firestore"
-	firebase "firebase.google.com/go"
-	"google.golang.org/api/option"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-var DB *firestore.Client
+var MongoClient *mongo.Client
 
 // a
 func InitDB() {
-	config := &firebase.Config{
-		ProjectID: "ccg-services",
-	}
-	opt := option.WithCredentialsFile("ccg-services-firebase-adminsdk-i2vau-dc2d957f8b.json")
-	app, err := firebase.NewApp(context.Background(), config, opt)
+	clientOpts := options.Client().ApplyURI(
+		"mongodb://localhost:27017/")
+	client, err := mongo.Connect(context.TODO(), clientOpts)
 	if err != nil {
-		log.Fatalf("error init app: %v", err)
+		log.Fatal(err)
 	}
 
-	client, err := app.Firestore(context.Background())
+	err = client.Ping(context.TODO(), nil)
 	if err != nil {
-		log.Fatalf("error init database client: %v", err)
+		log.Fatal(err)
 	}
-	DB = client
+
+	MongoClient = client
+}
+
+func GetClient() *mongo.Client {
+	return MongoClient
 }

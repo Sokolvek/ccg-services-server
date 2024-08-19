@@ -1,48 +1,54 @@
 package handlers
 
-import (
-	"ccg/models"
-	"ccg/repository"
-	"encoding/json"
-	"fmt"
-	"net/http"
+// import (
+// 	// "ccg/feddis"
+// 	"ccg/models"
+// 	"ccg/repository"
+// 	"fmt"
+// 	"net/http"
 
-	"github.com/labstack/echo/v4"
-)
+// 	"github.com/labstack/echo/v4"
+// )
 
-func GetGhoul(c echo.Context) error {
-	data, _ := repository.GetGhoul()
+// // var fds feddis.Client = *feddis.GetClient()
 
-	js, _ := json.Marshal(data)
-	fmt.Println(string(js))
-	return c.String(http.StatusOK, string(js))
-}
+// func GetGhoul(c echo.Context) error {
+// 	// data, _ := repository.GetGhoul()
 
-func AddGhoul(c echo.Context) error {
+// 	// js, _ := json.Marshal(data)
+// 	// fmt.Println(string(js))
+// 	return c.String(http.StatusOK, "ну хз брат")
+// }
 
-	var ghoul models.Ghoul
+// func AddGhoul(c echo.Context) error {
 
-	c.Bind(&ghoul)
+// 	var ghoul models.Ghoul
 
-	fmt.Println(ghoul)
+// 	c.Bind(&ghoul)
 
-	repository.CreateGhoul(ghoul)
+// 	fmt.Println(ghoul)
 
-	return c.String(http.StatusOK, "иди нахуй")
-}
+// 	repository.CreateGhoul(ghoul)
 
-func EditGhoul(c echo.Context) error {
-	firstName := c.FormValue("firstName")
-	lastName := c.FormValue("lastName")
-	rank := c.FormValue("rank")
+// 	return c.String(http.StatusOK, "иди нахуй")
+// }
 
-	ccg := models.CCG{
-		FirstName: firstName,
-		LastName:  lastName,
-		Rank:      rank,
-	}
+// func EditGhoul(c echo.Context) error {
+// 	firstName := c.FormValue("firstName")
+// 	lastName := c.FormValue("lastName")
+// 	rank := c.FormValue("rank")
 
-	repository.EditCCG(ccg)
+// 	ccg := models.CCG{
+// 		FirstName: firstName,
+// 		LastName:  lastName,
+// 		Rank:      rank,
+// 	}
 
-	return c.String(http.StatusOK, "всё норм бро")
-}
+// 	repository.EditCCG(ccg)
+
+// 	return c.String(http.StatusOK, "всё норм бро")
+// }
+
+// func GetGhoulByName(name string) (models.Ghoul, error){
+// 	return , nil
+// }

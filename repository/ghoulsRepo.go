@@ -1,11 +1,6 @@
 package repository
 
 import (
-	"ccg/models"
-	"ccg/storage"
-	"ccg/usecases"
-	"context"
-
 	"github.com/labstack/echo/v4"
 )
 
@@ -15,43 +10,46 @@ type GhoulRepository interface {
 	GetAllGhouls(ctx echo.Context) error
 }
 
-func CreateGhoul(ghoul models.Ghoul) error {
-	docId := ghoul.FirstName + "_" + ghoul.LastName
+// func CreateGhoul(ghoul models.Ghoul) error {
 
-	ref := storage.DB.Collection("ghouls").Doc(docId)
+// 	docId := ghoul.FirstName + "_" + ghoul.LastName
 
-	data := usecases.StructToInterface(ghoul)
+// 	ref := storage.DB.Collection("ghouls").Doc(docId)
 
-	ref.Create(context.Background(), data)
+// 	data := usecases.StructToInterface(ghoul)
 
-	return nil
-}
+// 	ref.Create(context.Background(), data)
 
-func EditGhoul(ghoul models.Ghoul) error {
-	docId := ghoul.FirstName + "_" + ghoul.LastName
+// 	return nil
+// }
 
-	ref := storage.DB.Collection("ghouls").Doc(docId)
+// func EditGhoul(ghoul models.Ghoul) error {
+// 	docId := ghoul.FirstName + "_" + ghoul.LastName
 
-	data := usecases.StructToInterface(ghoul)
+// 	ref := storage.DB.Collection("ghouls").Doc(docId)
 
-	ref.Set(context.Background(), data)
+// 	data := usecases.StructToInterface(ghoul)
 
-	return nil
-}
+// 	ref.Set(context.Background(), data)
 
-func GetGhoul() ([]models.Ghoul, error) {
-	var ghouls []models.Ghoul
+// 	return nil
+// }
 
-	docs, err := storage.DB.Collection("ghouls").Documents(context.Background()).GetAll()
-	if err != nil {
-		return nil, err
-	}
-	for _, doc := range docs {
-		var ghoul models.Ghoul
-		if err := doc.DataTo(&ghoul); err != nil {
-			return nil, err
-		}
-		ghouls = append(ghouls, ghoul)
-	}
-	return ghouls, nil
-}
+// func GetGhoul() ([]models.Ghoul, error) {
+// 	var ghouls []models.Ghoul
+
+// 	docs, err := storage.DB.Collection("ghouls").Documents(context.Background()).GetAll()
+// 	if err != nil {
+// 		return nil, err
+// 	}
+// 	for _, doc := range docs {
+// 		var ghoul models.Ghoul
+// 		if err := doc.DataTo(&ghoul); err != nil {
+// 			return nil, err
+// 		}
+// 		ghouls = append(ghouls, ghoul)
+// 	}
+// 	return ghouls, nil
+// }
+
+// func GetGhoulByName()

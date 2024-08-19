@@ -13,8 +13,8 @@ import (
 func GetCCG(c echo.Context) error {
 	data, _ := repository.GetCCG()
 
+	fmt.Println(data)
 	js, _ := json.Marshal(data)
-	fmt.Println(string(js))
 	return c.String(http.StatusOK, string(js))
 }
 
@@ -29,9 +29,9 @@ func AddCCG(c echo.Context) error {
 		Rank:      rank,
 	}
 
-	repository.CreateCCG(ccg)
+	data, _ := repository.CreateCCG(ccg)
 
-	return c.String(http.StatusOK, "иди нахуй")
+	return c.String(http.StatusOK, string(data.FirstName))
 }
 
 func EditCCG(c echo.Context) error {

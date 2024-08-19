@@ -11,6 +11,6 @@ func InitRoutes(e *echo.Echo) {
 	e.POST("/ccg", handlers.AddCCG)
 	e.PUT("/ccg", handlers.EditCCG)
 
-	e.GET("/ghoul", handlers.GetGhoul)
-	e.POST("/ghoul", handlers.AddGhoul)
+	// e.GET("/ghoul", handlers.GetGhoul)
+	// e.POST("/ghoul", handlers.AddGhoul)
 }
